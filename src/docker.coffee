@@ -41,7 +41,7 @@ module.exports = (robot) ->
                 _.forEach cont.Ports, (p) ->
                     ports.push "#{p.IP}:#{p.PublicPort}->#{p.PrivatePort}/#{p.Type}"
                 
-                t.cell 'CONTAINER ID', cont.Id.slice 12
+                t.cell 'CONTAINER ID', cont.Id.slice 0,12
                 t.cell 'IMAGE'       , cont.Image
                 t.cell 'COMMAND'     , cont.Command
                 t.cell 'CREATED'     , cont.Created
