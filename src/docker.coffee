@@ -37,12 +37,11 @@ module.exports = (robot) ->
         robot.docker.listContainers {all: true}, (err, containers) ->
             t = new Table
             _.forEach containers, (cont) ->
-                #TODO: cut first 12 character
                 ports = []
                 _.forEach cont.Ports, (p) ->
                     ports.push "#{p.IP}:#{p.PublicPort}->#{p.PrivatePort}/#{p.Type}"
                 
-                t.cell 'CONTAINER ID', cont.Id
+                t.cell 'CONTAINER ID', cont.Id.slice 12
                 t.cell 'IMAGE'       , cont.Image
                 t.cell 'COMMAND'     , cont.Command
                 t.cell 'CREATED'     , cont.Created
