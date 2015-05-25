@@ -12,8 +12,5 @@ describe 'docker', ->
 
     require('../src/docker')(@robot)
 
-  it 'registers a respond listener', ->
-    expect(@robot.respond).to.have.been.calledWith(/hello/)
-
-  it 'registers a hear listener', ->
-    expect(@robot.hear).to.have.been.calledWith(/orly/)
+  it 'registers a respond listener: docker ps', ->
+    expect(@robot.respond).to.have.been.calledWith(/docker ps/)
