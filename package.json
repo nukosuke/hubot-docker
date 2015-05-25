@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "dockerode": "~2.1.4",
-    "easy-table": "~0.3.0"
+    "easy-table": "~0.3.0",
+    "lodash": "~3.9.2"
   },
   "peerDependencies": {
     "hubot": "2.x"

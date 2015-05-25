@@ -22,6 +22,7 @@
 #   Yosuke Tamura <tamura.yosuke.tp8@gmail.com>
     
 Docker = require 'dockerode'
+_ = require 'lodash'
 Table  = require 'easy-table'
 
 module.exports = (robot) ->
@@ -38,9 +39,9 @@ module.exports = (robot) ->
             #TODO: err handling
             #TODO: all flag
             t = new Table
-            containers.forEach (cont) ->
+            _.forEach containers, (cont) ->
+                #TODO: 
                 t.cell 'id', cont.Id
-                t.cell '', cont.Name
                 t.newRow()
             msg.reply t.toString()
 ### TODO    
