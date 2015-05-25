@@ -20,9 +20,9 @@
 #
 # Author:
 #   Yosuke Tamura <tamura.yosuke.tp8@gmail.com>
-    
+
+_      = require 'lodash'
 Docker = require 'dockerode'
-_ = require 'lodash'
 Table  = require 'easy-table'
 
 module.exports = (robot) ->
@@ -36,14 +36,24 @@ module.exports = (robot) ->
     robot.respond /docker ps/, (msg) ->
         #TODO authenticate user
         robot.docker.api.listContainers {all: false}, (err, containers) ->
-            #TODO: err handling
             #TODO: all flag
             t = new Table
             _.forEach containers, (cont) ->
-                #TODO: 
-                t.cell 'id', cont.Id
+                #TODO: cut first 12 character
+                ports = []
+                _.forEach cont.Ports, (p) ->
+                    ports.push "#{p.IP}:#{p.PublicPort}->#{p.PrivatePort}/#{p.Type}"
+                
+                t.cell 'CONTAINER ID', cont.Id
+                t.cell 'IMAGE'       , cont.Image
+                t.cell 'COMMAND'     , cont.Command
+                t.cell 'CREATED'     , cont.Created
+                t.cell 'STATUS'      , cont.Status
+                t.cell 'PORTS'       , ports.join ','
+                t.cell 'NAMES'       , cont.Names
                 t.newRow()
             msg.reply t.toString()
+
 ### TODO    
     robot.respond /docker run /, (msg) ->
         robot.docker.api.createContainer
