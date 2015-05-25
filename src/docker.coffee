@@ -2,14 +2,13 @@
 #   A hubot script that manage docker container
 #
 # Configuration:
-#   DOCKER_SOCK
 #   DOCKER_HOST
 #   DOCKER_PORT
 #
 # Commands:
 #   hubot docker ps - show container list
-#   hubot docker run <image> - <what the respond trigger does>
-#   hubot docker start <container> - <what the hear trigger does>
+#   hubot docker run <image> - 
+#   hubot docker start <container> - 
 #   hubot docker stop <container> -
 #   hubot docker rm <container> -
 #   hubot docker images - show image list
@@ -26,17 +25,16 @@ Docker = require 'dockerode'
 Table  = require 'easy-table'
 
 module.exports = (robot) ->
-    host = process.env.DOCKER_HOST or '127.0.0.1'
-    port = process.env.DOCKER_PORT or 2375
+    config =
+        host: process.env.DOCKER_HOST or '127.0.0.1'
+        port: process.env.DOCKER_PORT or 2375
 
-    robot.docker =
-        api: new Docker host: host, port: port
-        containers: []
+    robot.docker = new Docker config
 
     robot.respond /docker ps/, (msg) ->
-        #TODO authenticate user
-        robot.docker.api.listContainers {all: false}, (err, containers) ->
-            #TODO: all flag
+        #TODO: authenticate user
+        #TODO: (all) flag
+        robot.docker.listContainers {all: true}, (err, containers) ->
             t = new Table
             _.forEach containers, (cont) ->
                 #TODO: cut first 12 character
@@ -56,18 +54,17 @@ module.exports = (robot) ->
 
 ### TODO    
     robot.respond /docker run /, (msg) ->
-        robot.docker.api.createContainer
+        robot.docker.createContainer
         msg.reply 
 
     robot.respond /docker start /, (msg) ->
-        cont = robot.docker.api.getContainer 
+        cont = robot.docker.getContainer 
         msg.reply
         
     robot.respond /docker stop /, (msg) ->
-        cont = robot.docker.api.getContainer
+        cont = robot.docker.getContainer
         msg.reply
 
     robot.respond /docker images/, (msg) ->
-        
         msg.reply
 ###
